@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weight Display</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    #weight {
+      font-size: 2em;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Weight Display</h2>
+  <div id="weight">Loading...</div>
+
+  <script>
+    $(document).ready(function() {
+      // Open serial connection to Arduino (adjust COM port)
+      var serial = new WebSocket("ws://localhost:8080");  // WebSocket to communicate with Arduino
+      
+      serial.onmessage = function(event) {
+        var data = event.data.trim();
+        if (data.startsWith("Weight:")) {
+          var weight = data.split(":")[1].trim();
+          $('#weight').text(weight + " kg");
+        }
+      };
+    });
+  </script>
+</body>
+</html>
